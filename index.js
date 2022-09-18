@@ -1,9 +1,6 @@
 import express from 'express'
 import { Person } from './person.js';
-
-const teste = new Person('Rodolfo');
-
-console.log(teste.sayMyName());
+import './modules/path.js'
 
 
 const app = express()
