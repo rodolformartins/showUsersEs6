@@ -1,26 +1,61 @@
 import express from 'express'
+import { UserModel } from '../src/models/user.model.js'
+
+const userModel = new UserModel();
+
+const userMethod = userModel.modelReturn();
 
 const app = express();
 
+app.use(express.json());
 
-app.get('/home', (req, res) => {
-    res.status(200).send('<h1>hello word!</h1>');
+
+//Consultando todos os usuários na base de dados
+app.get('/users', async (req, res) => {
+    try {
+        const users = await userMethod.find({});
+        res.status(200).json(users);
+    } catch (error) {
+        res.status(500).send(error.message);
+    }
 });
 
-app.get('/users', (req, res) => {
-    const users = [
-        {
-            name: 'João Silva',
-            email: 'joao@gmail.com'
-        },
-        {
-            name: 'Jane Silva',
-            email: 'jane@gmail.com'
-        }
-    ];
 
-    res.status(200).json(users);
+//consultando usuário por ID
+app.get('/users/:id', async (req, res) => {
+    try {
+        const id = req.params.id;
+        const user = await userMethod.findById(id);
+
+        return res.status(200).json(user);
+    } catch (error) {
+        return res.status(500).send(error.message)
+    }
+});
+
+
+
+app.post('/users', async (req, res) => {
+    try {
+        const user = await userMethod.create(req.body);
+
+        res.status(201).json(user);
+    } catch (error) {
+        res.status(500).send(error.message);
+    }
 })
+
+// Atualizar um campo especifico de algum usuário
+app.patch("/users/:id", async (req, res) => {
+    try {
+        const id = req.params.id;
+        const user = await userMethod.findByIdAndUpdate(id, req.body, { new: true });
+
+        res.status(200).json(user);
+    } catch (error) {
+        res.status(500).send(error.message)
+    }
+});
 
 const port = 8080;
 
