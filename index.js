@@ -1,6 +1,6 @@
 import dotenv from 'dotenv'
-import { Connect } from './src/database/connect.js';
-import './modules/express.js'
+import { Connect } from './src/controller/connect.js';
+import './src/controller/express.js'
 
 
 dotenv.config();
