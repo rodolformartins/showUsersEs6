@@ -19,6 +19,7 @@ app.use((req, res, next) => {
     next();
 })
 
+//endpoint para visualizar users
 app.get('/views/users', async (req, res) => {
     const users = await userMethod.find({})
     res.render('index', { users });
